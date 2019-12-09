@@ -12,10 +12,57 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var window: UIWindow?
+    var contactList:[Contact] = []
+    
+    func StoreTestAccount(){
+        
+        //retrieve (recipe)
 
+        let context = persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CDAccount")
+        
+       // if retrieving fails
+        do {
+            //fetching list of coredata to see if anything is inside
+             let list:[NSManagedObject] = try context.fetch(fetchRequest)
+    
+            //if nothing is in list
+            if list.count == 0{
+            let entity = NSEntityDescription.entity(forEntityName: "CDAccount", in: context)!
+                
+                //add person into core data (hardcode)
+              let person = NSManagedObject(entity: entity, insertInto: context)
+                    person.setValue("user1@gmail.com", forKey: "email")
+                    person.setValue("12345678", forKey: "password")
+                
+            let person2 = NSManagedObject(entity: entity, insertInto: context)
+            person2.setValue("admin@apple.com", forKey: "email")
+            person2.setValue("root", forKey: "password")
+                
+                //if creating fails
+                do{
+                    try context.save()
+                } catch let error as NSError{
+                    print("Could not save. \(error), \(error.userInfo)")
+                }
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error),\(error.userInfo)")
+        }
+    }
+    
+    func CreateDummyContacts(){
+        
+        //add items to list
+        contactList.append(Contact.init(firstname: "Alan", lastname: "Hayes", photo: UIImage(named:"alanhayes")!, telephone: "88221122"))
+        contactList.append(Contact.init(firstname: "Jean", lastname: "Yip", photo: UIImage(named: "jeanyip")!, telephone: "55115522"))
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        //call function
+        StoreTestAccount()
         return true
     }
 
