@@ -18,20 +18,22 @@ class LoginViewController:UIViewController{
     
     @IBAction func btnLogin(_ sender: Any) {
         
+        //retrieve data from app delegate
         let appDelegate = (UIApplication.shared.delegate) as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CDAccount")
         
            do{
-                    //coredata list
+                    //place all accounts from CD into list
                    let accountList = try context.fetch(fetchRequest) as! [CDAccount]
+            
+                //for each account in account list
                for r in accountList{
-                
                 //if login details is stored in coredata
                 if r.email == txtEmail.text! && r.password == txtPassword.text!
                 {
-                    //link to storyboard with "grnavcontroller" identifier
+                    //link to storyboard with "grnavcontroller" identifier - nav controller
                     let vc = self.storyboard?.instantiateViewController(identifier: "grnavcontroller")
                     present(vc!, animated: false, completion: nil)
                 }

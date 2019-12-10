@@ -17,19 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func StoreTestAccount(){
         
-        //retrieve (recipe)
-
+        //fetch request for data
         let context = persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "CDAccount")
         
-       // if retrieving fails
+       
         do {
             //fetching list of coredata to see if anything is inside
              let list:[NSManagedObject] = try context.fetch(fetchRequest)
     
             //if nothing is in list
             if list.count == 0{
+        
             let entity = NSEntityDescription.entity(forEntityName: "CDAccount", in: context)!
                 
                 //add person into core data (hardcode)
@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("Could not save. \(error), \(error.userInfo)")
                 }
             }
+            // if retrieving fails
         } catch let error as NSError {
             print("Could not fetch. \(error),\(error.userInfo)")
         }
